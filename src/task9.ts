@@ -1,29 +1,13 @@
-/**
- * Программа управления библиотечным фондом
- * Использует бинарное дерево поиска для хранения информации о книгах
- */
-
 import * as readline from "readline";
 
-/**
- * Структура данных для хранения информации о книге
- */
 interface Book {
-  /** Номер УДК */
   udc: string;
-  /** Фамилия и инициалы автора */
   author: string;
-  /** Название книги */
   title: string;
-  /** Год издания */
   year: number;
-  /** Количество экземпляров в библиотеке */
   copies: number;
 }
 
-/**
- * Узел бинарного дерева
- */
 class TreeNode {
   book: Book;
   left: TreeNode | null = null;
@@ -34,16 +18,9 @@ class TreeNode {
   }
 }
 
-/**
- * Класс бинарного дерева поиска для хранения книг
- */
 class BookBinaryTree {
   private root: TreeNode | null = null;
 
-  /**
-   * Добавляет книгу в дерево
-   * @param book информация о книге
-   */
   insert(book: Book): void {
     const newNode = new TreeNode(book);
 
@@ -55,13 +32,7 @@ class BookBinaryTree {
     this.insertNode(this.root, newNode);
   }
 
-  /**
-   * Вспомогательный метод для добавления узла в дерево
-   * @param node текущий узел
-   * @param newNode новый узел
-   */
   private insertNode(node: TreeNode, newNode: TreeNode): void {
-    // Используем UDC как ключ для сортировки в дереве
     if (newNode.book.udc < node.book.udc) {
       if (node.left === null) {
         node.left = newNode;
@@ -77,28 +48,16 @@ class BookBinaryTree {
     }
   }
 
-  /**
-   * Удаляет книгу из дерева по номеру УДК
-   * @param udc номер УДК книги для удаления
-   * @returns true, если книга была удалена, false - если не найдена
-   */
   remove(udc: string): boolean {
     if (this.root === null) {
       return false;
     }
 
     let found = false;
-    this.root = this.removeNode(this.root, udc, {value: found});
+    this.root = this.removeNode(this.root, udc, { value: found });
     return found;
   }
 
-  /**
-   * Вспомогательный метод для удаления узла из дерева
-   * @param node текущий узел
-   * @param udc номер УДК книги для удаления
-   * @param found флаг, указывающий, была ли найдена и удалена книга
-   * @returns обновленный узел
-   */
   private removeNode(
     node: TreeNode | null,
     udc: string,
@@ -115,15 +74,12 @@ class BookBinaryTree {
       node.right = this.removeNode(node.right, udc, found);
       return node;
     } else {
-      // Нашли узел для удаления
       found.value = true;
 
-      // Узел без потомков
       if (node.left === null && node.right === null) {
         return null;
       }
 
-      // Узел с одним потомком
       if (node.left === null) {
         return node.right;
       }
@@ -131,8 +87,6 @@ class BookBinaryTree {
         return node.left;
       }
 
-      // Узел с двумя потомками
-      // Находим минимальный узел в правом поддереве
       const minNode = this.findMinNode(node.right);
       node.book = minNode.book;
       node.right = this.removeNode(node.right, minNode.book.udc, {
@@ -142,11 +96,6 @@ class BookBinaryTree {
     }
   }
 
-  /**
-   * Находит узел с минимальным значением в дереве
-   * @param node корневой узел поддерева
-   * @returns узел с минимальным значением
-   */
   private findMinNode(node: TreeNode): TreeNode {
     let current = node;
     while (current.left !== null) {
@@ -155,21 +104,10 @@ class BookBinaryTree {
     return current;
   }
 
-  /**
-   * Поиск книги по номеру УДК
-   * @param udc номер УДК для поиска
-   * @returns найденная книга или null
-   */
   search(udc: string): Book | null {
     return this.searchNode(this.root, udc);
   }
 
-  /**
-   * Вспомогательный метод для поиска книги в дереве
-   * @param node текущий узел
-   * @param udc номер УДК для поиска
-   * @returns найденная книга или null
-   */
   private searchNode(node: TreeNode | null, udc: string): Book | null {
     if (node === null) {
       return null;
@@ -184,21 +122,12 @@ class BookBinaryTree {
     }
   }
 
-  /**
-   * Получает все книги, отсортированные по году издания
-   * @returns массив книг, отсортированный по году издания
-   */
   getAllBooksSortedByYear(): Book[] {
     const books: Book[] = [];
     this.inOrderTraversal(this.root, books);
     return books.sort((a, b) => a.year - b.year);
   }
 
-  /**
-   * Обход дерева в порядке "in-order" для сбора всех книг
-   * @param node текущий узел
-   * @param books массив для сбора книг
-   */
   private inOrderTraversal(node: TreeNode | null, books: Book[]): void {
     if (node !== null) {
       this.inOrderTraversal(node.left, books);
@@ -207,9 +136,7 @@ class BookBinaryTree {
     }
   }
 
-  /**
-   * Выводит все книги в дереве (обход "in-order")
-   */
+
   printAllBooks(): void {
     console.log("\nСписок всех книг в библиотеке:".padEnd(50, "="));
     console.log(
@@ -248,9 +175,6 @@ class BookBinaryTree {
   }
 }
 
-/**
- * Класс для управления библиотекой
- */
 class Library {
   private bookTree: BookBinaryTree;
   private rl: readline.Interface;
@@ -263,9 +187,6 @@ class Library {
     });
   }
 
-  /**
-   * Инициализирует библиотеку начальными данными
-   */
   initializeLibrary(): void {
     const initialBooks: Book[] = [
       {
@@ -323,15 +244,12 @@ class Library {
     console.log("Библиотека инициализирована начальными данными.");
   }
 
-  /**
-   * Добавляет новую книгу в библиотеку
-   */
   async addBook(): Promise<void> {
     console.log("\nДобавление новой книги:".padEnd(50, "-"));
 
     const udc = await this.askQuestion("Введите номер УДК: ");
 
-    // Проверяем, существует ли уже книга с таким УДК
+
     const existingBook = this.bookTree.search(udc);
     if (existingBook) {
       console.log(`Книга с УДК ${udc} уже существует в библиотеке.`);
@@ -346,7 +264,7 @@ class Library {
         const copies = parseInt(copiesStr);
 
         if (!isNaN(copies) && copies > 0) {
-          // Удаляем старую запись и добавляем обновленную
+
           this.bookTree.remove(udc);
           existingBook.copies += copies;
           this.bookTree.insert(existingBook);
@@ -381,9 +299,6 @@ class Library {
     console.log("Книга успешно добавлена в библиотеку.");
   }
 
-  /**
-   * Удаляет книгу из библиотеки
-   */
   async removeBook(): Promise<void> {
     console.log("\nУдаление книги:".padEnd(50, "-"));
 
@@ -391,7 +306,6 @@ class Library {
       "Введите номер УДК книги для удаления: "
     );
 
-    // Проверяем, существует ли книга с таким УДК
     const existingBook = this.bookTree.search(udc);
     if (!existingBook) {
       console.log(`Книга с УДК ${udc} не найдена в библиотеке.`);
@@ -424,7 +338,6 @@ class Library {
         this.bookTree.remove(udc);
         console.log("Все экземпляры книги удалены из библиотеки.");
       } else {
-        // Удаляем старую запись и добавляем обновленную
         this.bookTree.remove(udc);
         existingBook.copies -= count;
         this.bookTree.insert(existingBook);
@@ -435,9 +348,6 @@ class Library {
     }
   }
 
-  /**
-   * Поиск книги по номеру УДК
-   */
   async searchBook(): Promise<void> {
     console.log("\nПоиск книги:".padEnd(50, "-"));
 
@@ -456,9 +366,6 @@ class Library {
     }
   }
 
-  /**
-   * Выводит список книг, отсортированных по году издания
-   */
   displayBooksSortedByYear(): void {
     const books = this.bookTree.getAllBooksSortedByYear();
 
@@ -495,18 +402,10 @@ class Library {
     console.log("".padEnd(75, "-"));
   }
 
-  /**
-   * Выводит все книги в библиотеке
-   */
   displayAllBooks(): void {
     this.bookTree.printAllBooks();
   }
 
-  /**
-   * Вспомогательный метод для запроса ввода пользователя
-   * @param question вопрос для пользователя
-   * @returns Promise с ответом пользователя
-   */
   private askQuestion(question: string): Promise<string> {
     return new Promise((resolve) => {
       this.rl.question(question, (answer) => {
@@ -515,16 +414,12 @@ class Library {
     });
   }
 
-  /**
-   * Запускает главное меню программы
-   */
   async run(): Promise<void> {
     console.log("Программа управления библиотечным фондом".padEnd(70, "="));
     console.log(
       "Используется бинарное дерево поиска для хранения информации о книгах"
     );
 
-    // Инициализация библиотеки начальными данными
     this.initializeLibrary();
 
     let running = true;
@@ -571,6 +466,5 @@ class Library {
   }
 }
 
-// Запуск программы
 const library = new Library();
 library.run();

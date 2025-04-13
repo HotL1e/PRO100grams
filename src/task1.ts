@@ -1,12 +1,3 @@
-/**
- * Программа для расчета значений по формулам варианта 2
- */
-
-/**
- * Расчет значения z1 по формуле: z1 = cos α + sin α + cos 3α + sin 3α
- * @param alpha угол в радианах
- * @returns значение z1
- */
 function calculateZ1(alpha: number): number {
   return (
     Math.cos(alpha) +
@@ -16,20 +7,10 @@ function calculateZ1(alpha: number): number {
   );
 }
 
-/**
- * Расчет значения z2 по формуле: z2 = 2√2 cos α · sin(π/2 - 2α)
- * @param alpha угол в радианах
- * @returns значение z2
- */
 function calculateZ2(alpha: number): number {
   return 2 * Math.sqrt(2) * Math.cos(alpha) * Math.sin(Math.PI / 2 - 2 * alpha);
 }
 
-/**
- * Функция для проверки эквивалентности формул
- * @param alpha угол в радианах
- * @returns объект с результатами расчетов
- */
 function compareResults(alpha: number): {
   alpha: number;
   z1: number;
@@ -46,9 +27,6 @@ function compareResults(alpha: number): {
   };
 }
 
-/**
- * Запуск тестовых примеров с форматированным выводом
- */
 function run(): void {
   console.log("Тестовые примеры для проверки формул:".padEnd(60, "="));
   console.log(
@@ -73,16 +51,15 @@ function run(): void {
       "|"
   );
 
-  // Проверка для различных значений угла
   const testAngles = [
     0,
-    Math.PI / 6, // 30°
-    Math.PI / 4, // 45°
-    Math.PI / 3, // 60°
-    Math.PI / 2, // 90°
-    Math.PI, // 180°
-    (3 * Math.PI) / 2, // 270°
-    2 * Math.PI, // 360°
+    Math.PI / 6,
+    Math.PI / 4,
+    Math.PI / 3,
+    Math.PI / 2,
+    Math.PI,
+    (3 * Math.PI) / 2,
+    2 * Math.PI,
   ];
 
   testAngles.forEach((alpha) => {

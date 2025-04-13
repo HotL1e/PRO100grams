@@ -1,24 +1,9 @@
-/**
- * Программа обработки одномерного массива вещественных величин
- * Вариант 2
- */
-
-/**
- * Находит сумму положительных элементов массива
- * @param arr массив вещественных чисел
- * @returns сумма положительных элементов
- */
 function sumPositiveElements(arr: number[]): number {
   return arr.reduce((sum, current) => {
     return current > 0 ? sum + current : sum;
   }, 0);
 }
 
-/**
- * Находит индекс максимального по модулю элемента массива
- * @param arr массив вещественных чисел
- * @returns индекс максимального по модулю элемента
- */
 function findMaxAbsIndex(arr: number[]): number {
   let maxAbsIndex = 0;
   let maxAbsValue = Math.abs(arr[0]);
@@ -34,11 +19,6 @@ function findMaxAbsIndex(arr: number[]): number {
   return maxAbsIndex;
 }
 
-/**
- * Находит индекс минимального по модулю элемента массива
- * @param arr массив вещественных чисел
- * @returns индекс минимального по модулю элемента
- */
 function findMinAbsIndex(arr: number[]): number {
   let minAbsIndex = 0;
   let minAbsValue = Math.abs(arr[0]);
@@ -54,25 +34,17 @@ function findMinAbsIndex(arr: number[]): number {
   return minAbsIndex;
 }
 
-/**
- * Находит произведение элементов массива между максимальным по модулю и минимальным по модулю элементами
- * @param arr массив вещественных чисел
- * @returns произведение элементов
- */
 function productBetweenMaxMinAbs(arr: number[]): number {
   const maxAbsIndex = findMaxAbsIndex(arr);
   const minAbsIndex = findMinAbsIndex(arr);
 
-  // Определяем начальный и конечный индексы для произведения
   const startIndex = Math.min(maxAbsIndex, minAbsIndex) + 1;
   const endIndex = Math.max(maxAbsIndex, minAbsIndex);
 
-  // Если индексы совпадают или находятся рядом, возвращаем 0
   if (startIndex >= endIndex) {
     return 0;
   }
 
-  // Вычисляем произведение
   let product = 1;
   for (let i = startIndex; i < endIndex; i++) {
     product *= arr[i];
@@ -81,30 +53,18 @@ function productBetweenMaxMinAbs(arr: number[]): number {
   return product;
 }
 
-/**
- * Сортирует массив по убыванию
- * @param arr массив вещественных чисел
- * @returns отсортированный массив
- */
 function sortDescending(arr: number[]): number[] {
-  // Создаем копию массива, чтобы не изменять оригинал
   const sortedArr = [...arr];
   return sortedArr.sort((a, b) => b - a);
 }
 
-/**
- * Выводит результаты обработки массива
- * @param arr исходный массив
- */
 function processArray(arr: number[]): void {
   console.log("Исходный массив:");
   console.log(arr.join(", "));
 
-  // 1. Сумма положительных элементов
   const sumPositive = sumPositiveElements(arr);
   console.log(`\n1. Сумма положительных элементов: ${sumPositive.toFixed(2)}`);
 
-  // 2. Произведение элементов между max и min по модулю
   const maxAbsIndex = findMaxAbsIndex(arr);
   const minAbsIndex = findMinAbsIndex(arr);
   const product = productBetweenMaxMinAbs(arr);
@@ -133,16 +93,11 @@ function processArray(arr: number[]): void {
     console.log(`   Произведение: ${product.toFixed(2)}`);
   }
 
-  // 3. Сортировка по убыванию
   const sortedArr = sortDescending(arr);
   console.log("\n3. Массив, отсортированный по убыванию:");
   console.log(sortedArr.join(", "));
 }
 
-/**
- * Выводит таблицу с информацией о массиве
- * @param arr массив вещественных чисел
- */
 function printArrayTable(arr: number[]): void {
   console.log("\nТаблица элементов массива:");
   console.log("--------------------------------------------------");
@@ -164,7 +119,6 @@ function printArrayTable(arr: number[]): void {
   console.log("--------------------------------------------------");
 }
 
-// Тестовые примеры
 function runTests(): void {
   console.log(
     "=== Тест 1: Массив с положительными и отрицательными числами ===".padEnd(
@@ -192,5 +146,4 @@ function runTests(): void {
   printArrayTable(test3);
 }
 
-// Запуск тестов
 runTests();
