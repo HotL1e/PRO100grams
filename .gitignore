@@ -1,0 +1,12 @@
+# Скомпилированные файлы
+dist/
+*.js
+*.js.map
+
+# Зависимости
+node_modules/
+
+# Логи и временные файлы
+*.log
+.DS_Store
+Thumbs.db
